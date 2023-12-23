@@ -7,23 +7,41 @@
 
 // Function to generate random stock prices for multiple companies and write to file
 void *simulator(void *arg) {
+    double prices[NUM_COMPANIES][10];
+    for (int i = 0; i < NUM_COMPANIES; i++) {
+        for (int j = 0; j < 10; j++) {
+            prices[i][j] = (double)(rand() % 1000) / 10.0;
+        }
+    }
+
     while (1) {
-        FILE *file = fopen("stock_datav2.txt", "w");
+        FILE *file = fopen("stock_datav3.txt", "w");
         if (file == NULL) {
-            printf("Error opening file.\n");
+            printf("File doesn't exist yet. It has been created.\nPlease run the program again\n\n");
             exit(1);
         }
 
         srand(time(0));
 
-        for (int i = 0; i < NUM_COMPANIES; ++i) {
+        for (int i = 0; i < NUM_COMPANIES; i++) {
             fprintf(file, "Company %d:\n", i + 1);
-            for (int j = 0; j < 10; ++j) {
-                double price = (double)(rand() % 1000) / 10.0; // Generating random price (0 - 100)
-                fprintf(file, "%.2f\n", price);
+
+            // Shift existing prices down the array
+            for (int j = 1 ; j<10 ; j++) {
+                prices[i][j-1] = prices[i][j];
             }
+
+            // Print the shifted prices from the array
+            for (int j = 0; j < 10; ++j) {
+                fprintf(file, "%.2f\n", prices[i][j]);
+            }
+
+            // Generate a new price (less than 100) for the most recent slot
+            prices[i][9] = (double)(rand() % 10000) / 100.0;
+
             fprintf(file, "\n");
         }
+
 
         fclose(file);
         sleep(2.5); // Update the data every 2.5 seconds
@@ -49,7 +67,7 @@ void *analyzer(void *arg) {
 
         fclose(file);
 
-        sleep(3.5); // Analyzing every 3.5 seconds
+        sleep(2.5); // Analyzing every 2.5 seconds
     }
 
     return NULL;
