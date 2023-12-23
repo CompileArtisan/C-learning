@@ -35,7 +35,7 @@ void *simulator(void *arg) {
 // Function to read stock data from file and perform simple analysis for multiple companies
 void *analyzer(void *arg) {
     while (1) {
-        FILE *file = fopen("stock_datav2.txt", "r");
+        FILE *file = fopen("stock_datav3.txt", "r");
         if (file == NULL) {
             printf("Error opening file.\n");
             exit(1);
