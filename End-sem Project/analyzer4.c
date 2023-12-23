@@ -1,8 +1,8 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<unistd.h>
-#include<pthread.h>
-#include<time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <pthread.h>
+#include <time.h>
 
 #define NUM_COMPANIES 3 // Define the number of companies
 
@@ -17,13 +17,12 @@ void *simulator(void *arg) {
 
     while (1) {
         FILE *file = fopen("stock_datav4.txt", "w");
+        time_t t = time(NULL);
+        fprintf(file, "Stock data as of %s\n", ctime(&t));
         if (file == NULL) {
             printf("File doesn't exist yet. It has been created.\nPlease run the program again\n\n");
             exit(1);
         }
-
-        time_t t = time(NULL);
-        fprintf(file, "Stock data as of %s\n", ctime(&t));
 
         srand(time(0));
 
@@ -48,7 +47,7 @@ void *simulator(void *arg) {
 
 
         fclose(file);
-        sleep(3); // Update the data every 2.5 seconds
+        sleep(2.5); // Update the data every 2.5 seconds
     }
 
     return NULL;
@@ -57,7 +56,7 @@ void *simulator(void *arg) {
 // Function to read stock data from file and perform simple analysis for multiple companies
 void *analyzer(void *arg) {
     while (1) {
-        FILE *file = fopen("stock_datav3.txt", "r");
+        FILE *file = fopen("stock_datav4.txt", "r");
         if (file == NULL) {
             printf("Error opening file.\n");
             exit(1);
