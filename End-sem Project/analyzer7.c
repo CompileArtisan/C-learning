@@ -7,7 +7,30 @@
 
 #define NUM_COMPANIES 3 // Define the number of companies
 
+void plotGraph(int speed[]) {
+    
+    for (int i = 10; i > 0; i--) {
+        printf(" | "); //printing y-axis
+        for (int j = 0; j < 10; j++) {
+            if (speed[j] >= i) {
+                printf(" ::");
+            } 
+            else {
+                printf("   ");
+            }
+        }
+        printf("\n");
+    }
 
+    //printing x-axis
+    printf(" |-"); 
+    for (int i = 0; i < 10; ++i) {
+        printf("---");
+    }
+    printf("\n");
+}
+
+char UIheadings[10][100] = {"Select Company to Analyze:\nW-up ; S-down\n","Company 1","Company 2","Company 3"};
 
 int printUI(char UIheadings[10][100],int totalOptions) {
     int selectedOption = 0;    
@@ -91,7 +114,7 @@ void *simulator(void *arg) {
 
 
         fclose(file);
-        sleep(2.5); // Update the data every 2.5 seconds
+        sleep(2); // Update the data every 2 seconds
     }
 
     return NULL;
@@ -143,7 +166,7 @@ void *analyzer(void *arg) {
         fclose(file);
 
         if(ui==1){
-            char UIheadings[10][100] = {"Select Company to Analyze:\nW-up ; S-down\n","Company 1","Company 2","Company 3"};
+            
             comp=printUI(UIheadings,3);
         }
         
@@ -152,11 +175,13 @@ void *analyzer(void *arg) {
         printf("\033[2J\033[1;1H");
         int sum=0,min=1000,max=0,avg=0;
 
-        printf("Company %d\n\n",comp+1);
-        printf("Shares: ");
-        for(int j=0 ; j<10 ; j++){
-                printf("%d ",shares[comp][j]);
+        printf("Analysis of %s\n\n",UIheadings[comp+1]);
+        int graph[10];
+        for(int i = 0; i < 10; i++){
+            graph[i] = (int)((shares[comp][i] / 10)+0.5);
         }
+
+        plotGraph(graph);
         printf("\n\n");
                
         
@@ -175,7 +200,7 @@ void *analyzer(void *arg) {
         printf("Average Stock price: %d\n", avg);
         printf("Current Stock price: %d\n", shares[comp][9]);
 
-        sleep(2.5); // Analyzing every 2.5 seconds
+        sleep(2); // Analyzing every 2 seconds
     }
 
     return NULL;

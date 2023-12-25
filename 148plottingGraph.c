@@ -1,20 +1,22 @@
 #include <stdio.h>
 
-void plotGraph(int time[], int speed[]) {
+void plotGraph(int speed[]) {
     
     for (int i = 10; i > 0; i--) {
-        printf(" | ");
+        printf(" | "); //printing y-axis
         for (int j = 0; j < 10; j++) {
             if (speed[j] >= i) {
                 printf(" ::");
-            } else {
+            } 
+            else {
                 printf("   ");
             }
         }
         printf("\n");
     }
 
-    printf(" |-");
+    //printing x-axis
+    printf(" |-"); 
     for (int i = 0; i < 10; ++i) {
         printf("---");
     }
@@ -22,10 +24,9 @@ void plotGraph(int time[], int speed[]) {
 }
 
 int main() {
-    int time[] = {25, 50, 75, 100, 125, 150, 175, 200, 225, 250};
     int speed[] = {8, 5, 3, 4, 9, 6, 2, 2, 6, 8};
 
-    plotGraph(time, speed);
+    plotGraph(speed);
 
     return 0;
 }
