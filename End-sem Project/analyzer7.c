@@ -60,7 +60,7 @@ void *simulator(void *arg) {
     }
 
     while (1) {
-        FILE *file = fopen("stock_datav6.txt", "w");
+        FILE *file = fopen("stock_datav7.txt", "w");
         time_t t = time(NULL);
         fprintf(file, "Stock data as of %s\n", ctime(&t));
         if (file == NULL) {
@@ -101,7 +101,7 @@ int ui=1,comp=0;
 // Function to read stock data from file and perform simple analysis for multiple companies
 void *analyzer(void *arg) {
     while (1) {
-        FILE *file = fopen("stock_datav6.txt", "r");
+        FILE *file = fopen("stock_datav7.txt", "r");
         if (file == NULL) {
             printf("Error opening file.\n");
             exit(1);
