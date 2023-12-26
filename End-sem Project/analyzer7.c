@@ -13,7 +13,7 @@ void plotGraph(int speed[]) {
         printf(" | "); //printing y-axis
         for (int j = 0; j < 10; j++) {
             if (speed[j] >= i) {
-                printf(" ::");
+                printf(" ||");
             } 
             else {
                 printf("   ");
