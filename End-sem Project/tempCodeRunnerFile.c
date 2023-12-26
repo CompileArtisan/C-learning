@@ -1,1 +1,1 @@
-printUI
+printf("\nExiting program...\n");

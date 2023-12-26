@@ -7,6 +7,8 @@
 
 #define NUM_COMPANIES 3 // Define the number of companies
 
+
+
 void plotGraph(int speed[]) {
     
     for (int i = 10; i > 0; i--) {
@@ -30,7 +32,7 @@ void plotGraph(int speed[]) {
     printf("\n");
 }
 
-char UIheadings[10][100] = {"Select Company to Analyze:\nW-up ; S-down\n","Company 1","Company 2","Company 3"};
+char UIheadings[10][100] = {"STOCK MARKET ANALYZER\n\nSelect Company to Analyze:\nW-up ; S-down ; Q-quit\n","Company 1","Company 2","Company 3"};
 
 int printUI(char UIheadings[10][100],int totalOptions) {
     int selectedOption = 0;    
@@ -61,6 +63,16 @@ int printUI(char UIheadings[10][100],int totalOptions) {
             // Move selection down
             selectedOption = (selectedOption + 1) % totalOptions;
         } 
+        else if (key == 'q' || key == 'Q') {
+            // User pressed Q - Quit the program
+            printf("uit\n\nThank you for using the program!\n");
+            exit(1);
+        } 
+        else if (key == '\r') {
+            // User pressed Enter - Perform action based on selected option
+            // For this example, just break the loop
+            break;
+        }
         else if (key == '\r') {
             // User pressed Enter - Perform action based on selected option
             // For this example, just break the loop
@@ -83,7 +95,7 @@ void *simulator(void *arg) {
     }
 
     while (1) {
-        FILE *file = fopen("stock_datav7.txt", "w");
+        FILE *file = fopen("stock_datav8.txt", "w");
         time_t t = time(NULL);
         fprintf(file, "Stock data as of %s\n", ctime(&t));
         if (file == NULL) {
@@ -124,7 +136,7 @@ int ui=1,comp=0;
 // Function to read stock data from file and perform simple analysis for multiple companies
 void *analyzer(void *arg) {
     while (1) {
-        FILE *file = fopen("stock_datav7.txt", "r");
+        FILE *file = fopen("stock_datav8.txt", "r");
         if (file == NULL) {
             printf("Error opening file.\n");
             exit(1);
@@ -200,22 +212,43 @@ void *analyzer(void *arg) {
         printf("Average Stock price: %d\n", avg);
         printf("Current Stock price: %d\n", shares[comp][9]);
 
+        printf("\nPress 'b' to go back to the menu\nPress 'q' to quit\n");
+
         sleep(2); // Analyzing every 2 seconds
     }
 
     return NULL;
 }
 
-int main() {
-    pthread_t sim_thread, ana_thread;
 
-    // Create threads for simulator and analyzer
+void *check_user_input(void *arg) {
+    while (1) {
+        if(ui==1) continue;
+        if (getch() == 'q' || getch() == 'Q') {
+            printf("\nExiting program...\n");
+            exit(1);
+        }
+        else if (getch() == 'b' || getch() == 'B') {
+            // Signal the analyzer thread to go back to the menu
+            ui = 1;
+        }
+
+    }
+    return NULL;
+}
+
+int main() {
+    pthread_t sim_thread, ana_thread,input_thread;
+
+    // Create threads for simulator, analyzer, and input checking
     pthread_create(&sim_thread, NULL, simulator, NULL);
     pthread_create(&ana_thread, NULL, analyzer, NULL);
-    
-    // Wait for both threads to finish (which won't happen in this infinite loop)
+    pthread_create(&input_thread, NULL, check_user_input, NULL);
+
+    // Wait for all threads to finish
     pthread_join(sim_thread, NULL);
     pthread_join(ana_thread, NULL);
+    pthread_join(input_thread, NULL);
 
     return 0;
 }
