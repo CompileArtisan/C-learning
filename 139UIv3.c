@@ -1,21 +1,18 @@
 #include <stdio.h>
 #include <conio.h> // for getche
 
-int menu = 0; //global variable to store the menu option selected
-void printUI(char UIheadings[10][100],int totalOptions,int indentation) {
+
+void printUI(char UIheadings[10][100],int totalOptions) {
     int selectedOption = 0;    
     while (1) {
         // Clear screen and move cursor to top
-        printf("\033[2J\033[%d;1H",menu*totalOptions);
+        printf("\033[2J\033[1;1H");
 
         // Display the title (first element of the array)
         printf("%s\n",UIheadings[0]);
 
         // Display the menu (rest of the elements)
         for (int i = 0; i < totalOptions; i++) {
-            for(int j = 0; j < indentation; j++) {
-                printf(" ");
-            }
             if (i == selectedOption) {
                 printf("-> %s (Selected)\n", UIheadings[i+1]);
             } else {
@@ -43,11 +40,10 @@ void printUI(char UIheadings[10][100],int totalOptions,int indentation) {
     
     // Perform action based on the selected option (in a real scenario)
     printf("\nSelected Option: %d\n", selectedOption + 1);
-    menu+=indentation;
 }
 
 int main() {
     char UIheadings[10][100] = {"Windows Boot Manager","Car","Bike","Cycle"};
-    printUI(UIheadings,3,0);
+    printUI(UIheadings,3);
     return 0;
 }
