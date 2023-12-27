@@ -212,7 +212,7 @@ void *analyzer(void *arg) {
         printf("Average Stock price: %d\n", avg);
         printf("Current Stock price: %d\n", shares[comp][9]);
 
-        printf("\nPress 'b' to go back to the menu\nPress 'q' to quit\n");
+        printf("\nHold/Long Press 'b' to go back to the menu\nPress 'q' to quit\n");
 
         sleep(2); // Analyzing every 2 seconds
     }
