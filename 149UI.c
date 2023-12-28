@@ -29,7 +29,7 @@ int printUI(char UIheadings[10][100], int totalOptions) {
             break;
         }
     }
-    printf("\nSelected Option: %d\n", selectedOption + 1);
+    printf("\033[0m\nSelected Option: %d\n", selectedOption + 1);
     return selectedOption + 1;
 }
 
