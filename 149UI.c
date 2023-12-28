@@ -35,8 +35,8 @@ int printUI(char UIheadings[10][100], int totalOptions) {
 
 
 int main() {
-    char UIheadings[10][100] = {"Best Heading in the world\nA-Left ; D for Right\n\n","Car","Bike","Cycle","scooter","rishab"};
-    int x=printUI(UIheadings,5);
+    char UIheadings[10][100] = {"Best Heading in the world\nA-Left ; D for Right\n\n","Car","Bike","Cycle","scooter","rishab","mom","dad","bro","sis"};
+    int x=printUI(UIheadings,9);
     printf("%d",x);
     return 0;
 }
