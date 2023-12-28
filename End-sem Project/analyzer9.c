@@ -29,7 +29,7 @@ void plotGraph(int speed[]) {
     for (int i = 0; i < 10; ++i) {
         printf("---");
     }
-    printf("\n");
+    printf("\n");  
 }
 
 char UIheadings[10][100] = {"STOCK MARKET ANALYZER\n\nSelect Company to Analyze:\nW-up ; S-down ; Q-quit\n","Company 1","Company 2","Company 3"};
@@ -222,10 +222,10 @@ void *analyzer(void *arg) {
         printf("\033[13;48H Y-Coordinate 1 unit = $10"); 
         // box around the legend
         printf("\033[9;47H ___________________________________");
-        printf("\033[10;47H|");             printf("\033[10;82H|");
-        printf("\033[11;47H|");             printf("\033[11;82H|");   
-        printf("\033[12;47H|");             printf("\033[12;82H|");  
-        printf("\033[13;47H|");             printf("\033[13;82H|");      
+        printf("\033[10;47H|");            printf("\033[10;82H|");
+        printf("\033[11;47H|");            printf("\033[11;82H|");   
+        printf("\033[12;47H|");            printf("\033[12;82H|");  
+        printf("\033[13;47H|");            printf("\033[13;82H|");      
         printf("\033[14;47H|__________________________________|");
 
 
