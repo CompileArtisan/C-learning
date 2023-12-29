@@ -32,7 +32,7 @@ void plotGraph(int speed[]) {
     printf("\n");  
 }
 
-char UIheadings[10][100] = {"STOCK MARKET ANALYZER\n\nSelect Company to Analyze:\nW-up ; S-down ; Q-quit\n","Company 1","Company 2","Company 3"};
+char UIheadings[10][100] = {"STOCK MARKET ANALYZER\n\nSelect Company to Analyze:\nW-up ; S-down ; Q-quit\n","Googil","Microhard","Aaple"};
 
 int printUI(char UIheadings[10][100],int totalOptions) {
     int selectedOption = 0;    
