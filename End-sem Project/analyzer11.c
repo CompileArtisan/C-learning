@@ -7,6 +7,14 @@
 
 #define NUM_COMPANIES 3
 
+struct stats{
+    int min;
+    int max;
+    int avg;
+    int sum;
+} s[3];
+
+
 // Function to plot a graph based on the given stock prices
 void plotGraph(int speed[]) {
     for (int i = 10; i > 0; i--) {
@@ -66,6 +74,10 @@ int printUI(char UItitles2[10][100],int totalOptions) {
     return selectedOption; // Return the selected option
 }
 
+void printTable(){
+    
+}
+
 // Simulator thread function
 void *simulator(void *arg) {
     double prices[NUM_COMPANIES][10];
@@ -73,6 +85,12 @@ void *simulator(void *arg) {
         for (int j = 0; j < 10; j++) {
             prices[i][j] = (double)(rand() % 1000) / 10.0; // Generate random stock prices
         }
+    }
+    for (int i = 0; i < NUM_COMPANIES; ++i) {
+        s[i].min = INT_MAX; // Initialize min to a high value
+        s[i].max = INT_MIN; // Initialize max to a low value
+        s[i].avg = 0;
+        s[i].sum = 0;
     }
     while (1) {
         FILE *file = fopen("stock_datav11.txt", "w"); // Open the file in write mode
@@ -138,10 +156,27 @@ void *analyzer(void *arg) {
                 comp=printUI(UItitles2,3); // Print the UI and get the selected option   
             }
         }
+
+        for(int i=0 ; i<3 ; i++){
+            s[i].min = INT_MAX; // Re-initialize min to a high value
+            s[i].max = INT_MIN; // Re-initialize max to a low value
+            s[i].sum = 0; // Reset the sum to 0 for each company
+            for(int j=0 ; j<10 ; j++){
+                s[i].sum+=shares[i][j]; // Calculate the sum of stock prices
+                if(shares[i][j] < s[i].min){
+                    s[i].min = shares[i][j]; // Update the minimum stock price
+                } 
+                if(shares[i][j] > s[i].max){
+                    s[i].max = shares[i][j]; // Update the maximum stock price
+                }
+            }
+            s[i].avg = s[i].sum / 10; // Calculate the average stock price
+        }
+        s[comp].avg = s[comp].sum / 10; // Calculate the average stock price
         ui=0;
         if(scope==0){
             printf("\033[2J\033[1;1H"); // Clear the console screen
-            int sum=0,min=1000,max=0,avg=0;
+            
             printf("Analysis of %s\n\n",UItitles2[comp+1]); // Print the selected company name
             int graph[10];
             for(int i = 0; i < 10; i++){
@@ -149,19 +184,10 @@ void *analyzer(void *arg) {
             }
             plotGraph(graph); // Plot the graph
             printf("\n\n");
-            for(int i=0 ; i<10 ; i++){
-                sum+=shares[comp][i]; // Calculate the sum of stock prices
-                if(shares[comp][i] < min){
-                    min = shares[comp][i]; // Update the minimum stock price
-                } 
-                if(shares[comp][i] > max){
-                    max = shares[comp][i]; // Update the maximum stock price
-                }
-            }
-            avg = sum / 10; // Calculate the average stock price
-            printf("Minimum Stock price: %d\n",min);
-            printf("Maximum Stock price: %d\n",max);
-            printf("Average Stock price: %d\n", avg);
+            
+            printf("Minimum Stock price: %d\n",s[comp].min);
+            printf("Maximum Stock price: %d\n",s[comp].max);
+            printf("Average Stock price: %d\n", s[comp].avg);
             printf("Current Stock price: %d\n", shares[comp][9]);
             printf("\nHold/Long Press 'b' to go back to the menu\nPress 'q' to quit\n");
             printf("\033[9;48H");
@@ -178,7 +204,16 @@ void *analyzer(void *arg) {
         }
         else if(scope==1){
             printf("\033[2J\033[1;1H"); // Clear the console screen
-            printf("Sector analysis not implemented yet");
+
+            // to print stats of all companies
+            printf("%-15s %-15s %-15s %-15s %-15s\n________________________________________________________________________________\n",
+             "Company", "Min Price", "Max Price", "Avg Price", "Current Price");
+            for(int i=0 ; i<3 ; i++){
+                printf("%-15s %-15d %-15d %-15d %-15d\n", UItitles2[i+1], s[i].min, s[i].max, s[i].avg, shares[i][9]);
+            }            
+            printf("\n\n");
+            
+            
             printf("\n\nHold/Long Press 'b' to go back to the main menu\nPress 'q' to quit\n");
             sleep(2); // sleep for 2 seconds
         }
