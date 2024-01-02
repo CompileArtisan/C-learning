@@ -74,9 +74,6 @@ int printUI(char UItitles2[10][100],int totalOptions) {
     return selectedOption; // Return the selected option
 }
 
-void printTable(){
-    
-}
 
 // Simulator thread function
 void *simulator(void *arg) {
@@ -109,7 +106,7 @@ void *simulator(void *arg) {
             for (int j = 0; j < 10; ++j) {
                 fprintf(file, "%.2f\n", prices[i][j]); // Write the stock prices to the file
             }
-            prices[i][9] = (double)(rand() % 10000) / 100.0; // Generate a new stock price
+            prices[i][9] = 10+ (double)(rand() % 9000) / 100.0; // Generate a new stock price
             fprintf(file, "\n");
         }
         fclose(file); // Close the file
@@ -206,6 +203,7 @@ void *analyzer(void *arg) {
             printf("\033[2J\033[1;1H"); // Clear the console screen
 
             // to print stats of all companies
+            printf("Analysis scope confined to the whole sector\n\n\n");
             printf("%-15s %-15s %-15s %-15s %-15s\n________________________________________________________________________________\n",
              "Company", "Min Price", "Max Price", "Avg Price", "Current Price");
             for(int i=0 ; i<3 ; i++){
