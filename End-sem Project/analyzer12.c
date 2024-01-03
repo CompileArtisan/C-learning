@@ -4,6 +4,7 @@
 #include <pthread.h>
 #include <time.h>
 #include <conio.h>
+#include <windows.h>
 
 #define NUM_COMPANIES 3
 
@@ -40,6 +41,16 @@ void plotGraph(int speed[]) {
 char UItitles1[10][100] = {"STOCK MARKET ANALYZER\n_____________________\n\nSelect scope of analysis\nW-up ; S-down ; Q-quit\n","Company","Sector"};
 char UItitles2[10][100] = {"ANALYSIS SCOPE CONFINED TO A COMPANY\n\nSelect Company to Analyze:\nW-up ; S-down ; Q-quit\n","Googil","Microhard","Aaple"};
 
+void sounds(char key){
+    if(key!='\r' && key!='b' && key!='B' && key!='q' && key!='Q'){
+        Beep(523,50);
+    }
+    else if(key=='\r'){
+        Beep(1047,50);
+        Beep(1047,50);
+    }
+}
+
 // Function to print the user interface and get the selected option
 int printUI(char UItitles2[10][100],int totalOptions) {
     int selectedOption = 0;    
@@ -54,6 +65,7 @@ int printUI(char UItitles2[10][100],int totalOptions) {
             }
         }
         char key = getche(); // Get the user input
+        sounds(key);
         if (key == 'w' || key == 'W') {
             selectedOption = (selectedOption - 1 + totalOptions) % totalOptions; // Move the selection up
         } 
@@ -62,11 +74,13 @@ int printUI(char UItitles2[10][100],int totalOptions) {
         } 
         else if (key == 'q' || key == 'Q') {
             printf("uit\n\nThank you for using the program!\n");
-            exit(1); // Quit the program
+            int result = MessageBox(NULL, "Are you sure you want to leave?", "Stock Market Analyzer", MB_YESNO);
+            if (result == IDYES) {
+                // User clicked 'Yes', exit the program
+                printf("\nExiting program...\n");
+                exit(1);
+            }
         } 
-        else if (key == '\r') {
-            break; // Break the loop when the user presses enter
-        }
         else if (key == '\r') {
             break; // Break the loop when the user presses enter
         }
@@ -90,7 +104,7 @@ void *simulator(void *arg) {
         s[i].sum = 0;
     }
     while (1) {
-        FILE *file = fopen("stock_datav11.txt", "w"); // Open the file in write mode
+        FILE *file = fopen("stock_datav12.txt", "w"); // Open the file in write mode
         time_t t = time(NULL);
         fprintf(file, "Stock data as of %s\n", ctime(&t)); // Write the current time to the file
         if (file == NULL) {
@@ -120,7 +134,7 @@ int ui=1,comp=0,scope=0;
 // Analyzer thread function
 void *analyzer(void *arg) {
     while (1) {
-        FILE *file = fopen("stock_datav11.txt", "r"); // Open the file in read mode
+        FILE *file = fopen("stock_datav12.txt", "r"); // Open the file in read mode
         if (file == NULL) {
             printf("File has just been created.\nPlease run the program again\n\n");
             exit(1); // Exit the program if the file cannot be opened
@@ -226,7 +240,12 @@ void *check_user_input(void *arg) {
         if(ui==1) continue;
         if (getch() == 'q' || getch() == 'Q') {
             printf("\nExiting program...\n");
-            exit(1); // Quit the program if the user presses 'q'
+            int result = MessageBox(NULL, "Are you sure you want to leave?", "Stock Market Analyzer", MB_YESNO);
+            if (result == IDYES) {
+                // User clicked 'Yes', exit the program
+                printf("\nExiting program...\n");
+                exit(1);
+            }
         }
         else if (getch() == 'b' || getch() == 'B') {
             ui = 1; // Go back to the menu if the user presses 'b'
@@ -236,6 +255,8 @@ void *check_user_input(void *arg) {
 }
 
 int main() {
+    printf("\033[2J\033[1;1H"); // Clear the console screen
+    MessageBox(NULL, "This program is intended for educational purposes only.\nPrices shown do not reflect actual market prices\n\nPress \'OK\' to continue ", "Disclaimer!", MB_OK);
     pthread_t sim_thread, ana_thread,input_thread;
     pthread_create(&sim_thread, NULL, simulator, NULL); // Create the simulator thread
     pthread_create(&ana_thread, NULL, analyzer, NULL); // Create the analyzer thread

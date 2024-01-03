@@ -3,20 +3,22 @@
 #include<unistd.h>
 
 void* thread1(void* arg){
-    printf("thread1\n");
-    sleep(5);
+    for(int i=0;i<5;i++){
+        printf("thread1\n");
+        sleep(5);
+    }
 }
 
-void thread2(){
-    printf("thread2\n");
-    sleep(1);
-}
 
 int main(){
     for(;;){
         pthread_t t1;
         pthread_create(&t1,NULL,thread1,NULL);
-        thread2();
+        for(int i=0;i<5;i++){
+            printf("thread2\n");
+            sleep(1);
+        }
+        
         pthread_join(t1,NULL);
     }
     return 0;
