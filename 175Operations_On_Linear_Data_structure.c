@@ -39,7 +39,17 @@ void delete(int a[50] , int n , int index){
         a[i]=a[i+1];
 }
 
-
+// bubblesort
+void bubblesort(int a[50], int n){
+    for(int j=0 ; j<n ; j++){
+        for(int i=0 ; i<n-1 ; i++)
+            if(a[i]>=a[i+1]){
+                int temp=a[i];
+                a[i]=a[i+1];
+                a[i+1]=temp;
+            }        
+    }
+}
 
 
 
@@ -60,6 +70,10 @@ int main(){
     delete(a,5,3);
     transverse(a,4);
 
+    printf("\n\n");
+    int c[50]={49,90,12,45};
+    bubblesort(c,4);
+    transverse(c,4);
 
     return 0;
 }
