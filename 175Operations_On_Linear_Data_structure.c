@@ -81,9 +81,9 @@ void dlar(int a[20] , int n , int index){
 }
 
 // Inserting in Unsorted Array
-void insertInUnsorted(int a[50] , int n , int value , int index){
-    for(int i=n-1 ; i>=index ; i--)
-        a[i+1] = a[i];
+void insertInUnsorted(int a[20] , int n , int value , int index){
+    for(int i=n ; i>=index ; i--)
+        a[i] = a[i-1];
     a[index]=value;
 }
 
