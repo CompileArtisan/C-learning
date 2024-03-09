@@ -39,10 +39,10 @@ node_t* createNewLinkedList(int count) {
 }
 
 void insertNode(int data, int position) {
-    node_t* newNode = CreateNewNode(data);
+    new = CreateNewNode(data);
     if (position == 1) {
-        newNode->next = start;
-        start = newNode;
+        new->next = start;
+        start = new;
     }
     else {
         node_t* temp = start;
@@ -53,8 +53,8 @@ void insertNode(int data, int position) {
             }
             temp = temp->next;
         }
-        newNode->next = temp->next;
-        temp->next = newNode;
+        new->next = temp->next;
+        temp->next = new;
     }
 }
 
