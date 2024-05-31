@@ -10,10 +10,8 @@ typedef struct NODE{
 node_t *new, *start, *tail;
 
 void traversal(node_t *start){
-    node_t *temp=start;
-    while(temp!=NULL){
-        printf("%d ",temp->value);
-        temp=temp->next;
+    for(node_t* temp = start ; temp!=NULL ; temp = temp->next){
+        printf("%d ",temp->value)
     }
 }
 
