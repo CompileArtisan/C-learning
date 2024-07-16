@@ -11,7 +11,7 @@ node_t *new, *start, *tail;
 
 void traversal(node_t *start){
     for(node_t* temp = start ; temp!=NULL ; temp = temp->next){
-        printf("%d ",temp->value)
+        printf("%d ",temp->value);
     }
 }
 
